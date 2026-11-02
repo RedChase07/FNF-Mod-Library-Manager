@@ -1,17 +1,18 @@
 # FNF Mod Library (WinUI)
+# I'm going to say this now, this is 100% AI vibe coded.
 
-A Windows desktop rewrite of the FNF Mod Library, built with C# and WinUI 3. The existing Python app is separate and is not modified by this project.
+[What Co-Pilot Said]
 
-> I'm going to say this now, this is 100% AI vibe coded.
+A Windows desktop rewrite of the FNF Mod Library, built with C# and WinUI 3.
 
 ## Features
 
-- Scan a selected folder and its subfolders for `.exe` mods without running them.
+- Scan a selected folder and its subfolders for `.exe` mods.
 - Browse mods in a virtualized library with search, sorting, favorites, and tag filters.
 - Add tags, ignore executables, and manage ignored entries.
 - Show a neighboring `icon.ico` or `icon.png` first, then the icon embedded in the executable.
 - Keep play counts, favorites, tags, and library settings between launches.
-- Choose card size and one to six columns, or customize the Ocean window, cards, borders, accent, text, and button fill/text/border colors individually.
+- Choose one to six columns, or customize the cards, borders, accent, text, and button fill/text/border colors individually.
 - Keep all mod cards the same size within each card-artwork setting.
 - Keep the current library scroll position while playing, favoriting, ignoring, or editing tags on a mod.
 - Launch a mod from its own folder after confirmation.
@@ -43,6 +44,6 @@ Copy the **entire** `publish\win-x64` folder to the other PC and run `FnFModLibr
 
 ## Data and migration
 
-The WinUI app stores its library data separately at `%APPDATA%\FNF Mod Library WinUI\library.json`. It does not import the Python app's favorites, tags, or play counts. The Python app and its data remain untouched.
+The WinUI app stores its library data separately at `%APPDATA%\FNF Mod Library WinUI\library.json`.
 
 If the app cannot start, it displays an error and writes details to `%TEMP%\FNF Mod Library WinUI startup error.txt`.
