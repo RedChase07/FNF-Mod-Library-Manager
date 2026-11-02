@@ -2,6 +2,8 @@
 
 A Windows desktop rewrite of the FNF Mod Library, built with C# and WinUI 3. The existing Python app is separate and is not modified by this project.
 
+> I'm going to say this now, this is 100% AI vibe coded.
+
 ## Features
 
 - Scan a selected folder and its subfolders for `.exe` mods without running them.
