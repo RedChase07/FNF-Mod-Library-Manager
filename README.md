@@ -1,7 +1,10 @@
 # FNF Mod Library (WinUI)
 # I'm going to say this now, this is 100% AI vibe coded.
 
-- [What Co-Pilot Said]
+Example Image
+<img width="1359" height="719" alt="image" src="https://github.com/user-attachments/assets/04bf4500-3a83-4a07-aad0-6ff5aadd0136" />
+
+- Bellow this message is what Co-Pilot said. also atm the setting option to individually set the color of each part of th ui doesnt seem to work (well some parts of it does but most of it doesnt)
 
 A Windows desktop rewrite of the FNF Mod Library, built with C# and WinUI 3.
 
