@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="FnFModLibrary_WinUI.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:FnFModLibrary_WinUI"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{ThemeResource AppBackgroundBrush}"
+    mc:Ignorable="d">
+
+    <Grid x:Name="RootGrid" Padding="28">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Spacing="6">
+                <TextBlock
+                    FontSize="26"
+                    FontWeight="SemiBold"
+                    Foreground="{ThemeResource PrimaryTextBrush}"
+                    Text="FNF Mod Library" />
+                <TextBlock
+                    x:Name="FolderLabel"
+                    Foreground="{ThemeResource MutedTextBrush}"
+                    Text="Choose your main FNF folder to get started."
+                    TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+            <StackPanel
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="8">
+                <Button
+                    x:Name="ChooseFolderButton"
+                    Background="{ThemeResource ButtonBackgroundBrush}"
+                    BorderBrush="{ThemeResource ButtonBorderBrush}"
+                    Click="ChooseFolder_Click"
+                    Content="Choose folder"
+                    Foreground="{ThemeResource ButtonForegroundBrush}" />
+                <Button
+                    x:Name="ScanButton"
+                    Background="{ThemeResource ButtonBackgroundBrush}"
+                    BorderBrush="{ThemeResource ButtonBorderBrush}"
+                    Click="Scan_Click"
+                    Content="Scan"
+                    Foreground="{ThemeResource ButtonForegroundBrush}" />
+                <Button
+                    x:Name="SettingsButton"
+                    Background="{ThemeResource ButtonBackgroundBrush}"
+                    BorderBrush="{ThemeResource ButtonBorderBrush}"
+                    Click="Settings_Click"
+                    Content="Settings"
+                    Foreground="{ThemeResource ButtonForegroundBrush}" />
+                <Button
+                    AutomationProperties.AutomationId="IgnoreButton"
+                    Background="{ThemeResource ButtonBackgroundBrush}"
+                    BorderBrush="{ThemeResource ButtonBorderBrush}"
+                    Click="ManageIgnored_Click"
+                    Content="Ignored"
+                    Foreground="{ThemeResource ButtonForegroundBrush}" />
+            </StackPanel>
+        </Grid>
+
+        <Grid
+            Grid.Row="1"
+            Margin="0,24,0,18"
+            ColumnSpacing="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox
+                x:Name="SearchBox"
+                PlaceholderText="Search mods, folders, or tags"
+                TextChanged="SearchBox_TextChanged" />
+            <ToggleButton
+                x:Name="FavoritesToggle"
+                Grid.Column="1"
+                Background="{ThemeResource ButtonBackgroundBrush}"
+                BorderBrush="{ThemeResource ButtonBorderBrush}"
+                VerticalAlignment="Center"
+                Checked="Filter_Changed"
+                Content="Favorites"
+                Foreground="{ThemeResource ButtonForegroundBrush}"
+                Unchecked="Filter_Changed" />
+            <ComboBox
+                x:Name="TagFilterBox"
+                Grid.Column="2"
+                MinWidth="150"
+                PlaceholderText="All tags"
+                SelectionChanged="Filter_Changed" />
+            <ComboBox
+                x:Name="SortBox"
+                Grid.Column="3"
+                MinWidth="150"
+                SelectedIndex="0"
+                SelectionChanged="Filter_Changed">
+                <ComboBoxItem Content="Name (A-Z)" />
+                <ComboBoxItem Content="Name (Z-A)" />
+                <ComboBoxItem Content="Most played" />
+                <ComboBoxItem Content="Least played" />
+                <ComboBoxItem Content="Favorites first" />
+            </ComboBox>
+            <TextBlock
+                x:Name="CountLabel"
+                Grid.Column="4"
+                VerticalAlignment="Center"
+                Foreground="{ThemeResource MutedTextBrush}"
+                Text="0 executables" />
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <GridView
+                x:Name="ModsGridView"
+                HorizontalAlignment="Stretch"
+                IsItemClickEnabled="False"
+                IsTabStop="False"
+                ItemsSource="{x:Bind FilteredMods}"
+                Loaded="ModsGridView_Loaded"
+                SelectionMode="None"
+                SizeChanged="ModsGridView_SizeChanged">
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid
+                            Orientation="Horizontal"
+                            VerticalAlignment="Top" />
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+                <GridView.ItemContainerStyle>
+                    <Style TargetType="GridViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Margin" Value="0" />
+                    </Style>
+                </GridView.ItemContainerStyle>
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="local:ModEntry">
+                        <Border
+                            Margin="6"
+                            Padding="14"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Background="{ThemeResource CardBackgroundBrush}"
+                            BorderBrush="{ThemeResource CardBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="10">
+                            <Grid RowSpacing="8">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid ColumnSpacing="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        FontSize="16"
+                                        FontWeight="SemiBold"
+                                        Foreground="{ThemeResource PrimaryTextBrush}"
+                                        Text="{x:Bind DisplayName}"
+                                        TextTrimming="CharacterEllipsis"
+                                        VerticalAlignment="Center" />
+                                    <Button
+                                        Grid.Column="1"
+                                        AutomationProperties.AutomationId="FavoriteButton"
+                                        Background="{ThemeResource ButtonBackgroundBrush}"
+                                        BorderBrush="{ThemeResource ButtonBorderBrush}"
+                                        Click="Favorite_Click"
+                                        Content="{x:Bind IsFavorite, Converter={StaticResource FavoriteGlyphConverter}, Mode=OneWay}"
+                                        FontSize="20"
+                                        Padding="6,0"
+                                        Foreground="{ThemeResource ButtonForegroundBrush}"
+                                        Tag="{x:Bind}" />
+                                </Grid>
+                                <Grid Grid.Row="1" ColumnSpacing="12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid
+                                        Width="64"
+                                        Height="64"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Top">
+                                        <FontIcon
+                                            x:Name="FallbackIcon"
+                                            FontSize="30"
+                                            Foreground="{ThemeResource AccentBrush}"
+                                            Glyph="&#xE189;" />
+                                        <Image
+                                            x:Name="ModIcon"
+                                            AutomationProperties.Name="{x:Bind DisplayName}"
+                                            DataContextChanged="ModIcon_DataContextChanged"
+                                            Loaded="ModIcon_Loaded"
+                                            Stretch="Uniform" />
+                                    </Grid>
+                                    <StackPanel Grid.Column="1" Spacing="5">
+                                        <TextBlock
+                                            Foreground="{ThemeResource MutedTextBrush}"
+                                            MaxLines="3"
+                                            Text="{x:Bind RelativePath}"
+                                            TextTrimming="CharacterEllipsis"
+                                            TextWrapping="Wrap" />
+                                        <TextBlock
+                                            Foreground="{ThemeResource MutedTextBrush}"
+                                            Text="{x:Bind PlayCountText, Mode=OneWay}" />
+                                        <TextBlock
+                                            Foreground="{ThemeResource AccentBrush}"
+                                            MaxLines="2"
+                                            Text="{x:Bind TagSummary, Mode=OneWay}"
+                                            TextTrimming="CharacterEllipsis"
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </Grid>
+                                <StackPanel
+                                    Grid.Row="2"
+                                    Orientation="Horizontal"
+                                    Spacing="6">
+                                    <Button
+                                        AutomationProperties.AutomationId="PlayButton"
+                                        Background="{ThemeResource ButtonBackgroundBrush}"
+                                        BorderBrush="{ThemeResource ButtonBorderBrush}"
+                                        Click="Play_Click"
+                                        Content="Play"
+                                        Foreground="{ThemeResource ButtonForegroundBrush}"
+                                        Tag="{x:Bind}" />
+                                    <Button
+                                        AutomationProperties.AutomationId="IgnoreButton"
+                                        Background="{ThemeResource ButtonBackgroundBrush}"
+                                        BorderBrush="{ThemeResource ButtonBorderBrush}"
+                                        Click="Ignore_Click"
+                                        Content="Ignore"
+                                        Foreground="{ThemeResource ButtonForegroundBrush}"
+                                        Tag="{x:Bind}" />
+                                    <Button
+                                        AutomationProperties.AutomationId="EditTagsButton"
+                                        Background="{ThemeResource ButtonBackgroundBrush}"
+                                        BorderBrush="{ThemeResource ButtonBorderBrush}"
+                                        Click="EditTags_Click"
+                                        Content="Tags"
+                                        Foreground="{ThemeResource ButtonForegroundBrush}"
+                                        Tag="{x:Bind}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+            <StackPanel
+                x:Name="EmptyState"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Spacing="8"
+                Visibility="Collapsed">
+                <FontIcon
+                    HorizontalAlignment="Center"
+                    FontSize="38"
+                    Foreground="{ThemeResource AccentBrush}"
+                    Glyph="&#xE189;" />
+                <TextBlock
+                    x:Name="EmptyTitle"
+                    FontSize="18"
+                    FontWeight="SemiBold"
+                    Foreground="{ThemeResource PrimaryTextBrush}"
+                    Text="Your library is ready for its first scan." />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    Foreground="{ThemeResource MutedTextBrush}"
+                    Text="Choose a folder or change your search." />
+            </StackPanel>
+        </Grid>
+
+        <Grid
+            Grid.Row="3"
+            Margin="0,12,0,0"
+            ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="180" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                x:Name="StatusLabel"
+                Foreground="{ThemeResource MutedTextBrush}"
+                Text="Scanning only lists executable files; it never runs them."
+                TextTrimming="CharacterEllipsis" />
+            <ProgressRing
+                x:Name="ScanProgress"
+                Grid.Column="1"
+                Width="20"
+                Height="20"
+                IsActive="False" />
+            <ProgressBar
+                x:Name="ScanProgressBar"
+                Grid.Column="2"
+                Height="4"
+                IsIndeterminate="False"
+                VerticalAlignment="Center" />
+        </Grid>
+    </Grid>
+</Page>

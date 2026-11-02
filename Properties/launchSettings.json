@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "FnFModLibrary.WinUI (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "FnFModLibrary.WinUI (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
