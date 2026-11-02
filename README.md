@@ -1,7 +1,7 @@
 # FNF Mod Library (WinUI)
 # I'm going to say this now, this is 100% AI vibe coded.
 
-[What Co-Pilot Said]
+- [What Co-Pilot Said]
 
 A Windows desktop rewrite of the FNF Mod Library, built with C# and WinUI 3.
 
